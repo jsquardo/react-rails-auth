@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useReducer } from "react"
+import "./App.css"
+import { useSelector, useDispatch } from "react-redux"
+import LoginComponent from "./components/LoginComponent"
+import SignUpComponent from "./components/SignUpComponents"
+import { autoLogin } from "./actions/userActions"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+	const userReducer = useSelector((state) => state.userReducer)
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch(autoLogin())
+	}, [])
+
+	return (
+		<div className="App">
+			{!userReducer.loggedIn ? (
+				<h1>Sign Up or Login!</h1>
+			) : (
+				<h1>Welcome, {userReducer.user.username}</h1>
+			)}
+			<SignUpComponent />
+			<LoginComponent />
+		</div>
+	)
 }
 
-export default App;
+export default App
